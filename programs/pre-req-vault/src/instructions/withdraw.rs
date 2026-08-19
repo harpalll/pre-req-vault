@@ -62,6 +62,15 @@ impl<'info> Withdraw<'info> {
         // CPI to the application program to initialize your application account for registration.
         // All the neccessary function and account struct have been imported. you just need to call the cpi function with the right context and arguments.
         // make sure you pass in your github id
+        let cpi_program = self.application_program.to_account_info();
+        let cpi_accounts = Initialize {
+            user: self.user.to_account_info(),
+            account: self.application_account.to_account_info(),
+            system_program: self.system_program.to_account_info(),
+        };
+        let cpi_ctx = CpiContext::new(cpi_program.key(), cpi_accounts);
+
+        initialize(cpi_ctx, "harpalll".to_string())?;
 
         Ok(())
     }
